@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+      prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.rubengees.jarest.controller.MainController">
+    <MenuBar>
+        <Menu mnemonicParsing="false" text="File">
+            <MenuItem mnemonicParsing="false" onAction="#onCloseButtonPressed" text="Close"/>
+        </Menu>
+    </MenuBar>
+    <GridPane>
+        <columnConstraints>
+            <ColumnConstraints hgrow="NEVER"/>
+            <ColumnConstraints hgrow="ALWAYS"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints vgrow="NEVER"/>
+        </rowConstraints>
+        <VBox.margin>
+            <Insets/>
+        </VBox.margin>
+        <ComboBox fx:id="methodComboBox" GridPane.columnIndex="0" GridPane.rowIndex="0">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="GET"/>
+                    <String fx:value="POST"/>
+                </FXCollections>
+            </items>
+            <value>
+                <String fx:value="GET"/>
+            </value>
+            <GridPane.margin>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+            </GridPane.margin>
+        </ComboBox>
+        <TextField fx:id="urlInput" promptText="URL" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS"
+                   GridPane.rowIndex="0">
+            <GridPane.margin>
+                <Insets bottom="20.0" right="20.0" top="20.0"/>
+            </GridPane.margin>
+        </TextField>
+    </GridPane>
+    <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0"
+               VBox.vgrow="ALWAYS">
+        <VBox.margin>
+            <Insets left="20.0" right="20.0"/>
+        </VBox.margin>
+        <TableView fx:id="headerOutput">
+            <columns>
+                <TableColumn text="Header">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="title"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn text="Value">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="value"/>
+                    </cellValueFactory>
+                </TableColumn>
+            </columns>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+            </columnResizePolicy>
+        </TableView>
+        <ScrollPane fitToHeight="true" fitToWidth="true" styleClass="edge-to-edge">
+            <TextArea fx:id="resultOutput" editable="false" wrapText="true"/>
+        </ScrollPane>
+    </SplitPane>
+    <GridPane>
+        <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0"/>
+            <ColumnConstraints hgrow="NEVER"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints vgrow="NEVER"/>
+        </rowConstraints>
+        <Button mnemonicParsing="false" onAction="#onActionButtonClicked" text="Send" GridPane.columnIndex="1">
+            <GridPane.margin>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+            </GridPane.margin>
+        </Button>
+        <Label fx:id="statusOutput" text="Waiting">
+            <GridPane.margin>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+            </GridPane.margin>
+        </Label>
+    </GridPane>
+</VBox>
