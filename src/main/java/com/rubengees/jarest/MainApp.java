@@ -12,9 +12,9 @@ import javafx.stage.Stage;
  *
  * @author Ruben Gees
  */
-public class MainApp extends Application{
+public class MainApp extends Application {
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         launch(args);
     }
 

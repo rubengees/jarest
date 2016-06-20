@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -137,7 +138,7 @@ public class MainController {
     }
 
     @NotNull
-    private String format(String contentType, String body) {
+    private String format(@NotNull String contentType, @NotNull String body) {
         String result;
 
         if (contentType.startsWith("text/html")) {
@@ -145,9 +146,13 @@ public class MainController {
             result = document.html();
         } else if (contentType.startsWith("application/json")) {
             try {
-                JSONObject object = new JSONObject(body);
-
-                result = object.toString(4);
+                if (body.startsWith("{")) {
+                    result = new JSONObject(body).toString(4);
+                } else if (body.startsWith("[")) {
+                    result = new JSONArray(body).toString(4);
+                } else {
+                    result = body;
+                }
             } catch (JSONException exception) {
                 result = exception.getMessage();
             }
