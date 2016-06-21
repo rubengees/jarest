@@ -6,8 +6,9 @@
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.layout.*?>
 <?import java.lang.String?>
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-      prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1"
+<VBox xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+      minWidth="-Infinity"
+      prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60"
       fx:controller="com.rubengees.jarest.controller.MainController">
     <MenuBar>
         <Menu mnemonicParsing="false" text="File">
@@ -80,7 +81,8 @@
         <rowConstraints>
             <RowConstraints vgrow="NEVER"/>
         </rowConstraints>
-        <Button mnemonicParsing="false" onAction="#onActionButtonClicked" text="Send" GridPane.columnIndex="1">
+        <Button mnemonicParsing="false" fx:id="actionButton" onAction="#onActionButtonClicked" text="Send"
+                GridPane.columnIndex="1">
             <GridPane.margin>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
             </GridPane.margin>

@@ -4,6 +4,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.async.Callback;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.rubengees.jarest.formatting.FormatterFactory;
 import com.rubengees.jarest.model.JarestHeader;
 import com.rubengees.jarest.util.Method;
 import javafx.application.Platform;
@@ -13,12 +14,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -36,6 +34,8 @@ public class MainController {
     @FXML
     ComboBox methodComboBox;
     @FXML
+    Button actionButton;
+    @FXML
     TextArea resultOutput;
     @FXML
     TableView<JarestHeader> headerOutput;
@@ -44,23 +44,24 @@ public class MainController {
 
     @Nullable
     private Future<HttpResponse<String>> currentRequest = null;
+    @NotNull
     private ObservableList<JarestHeader> headers = FXCollections.observableArrayList();
 
+    @NotNull
     private Callback<String> defaultCallback = new Callback<String>() {
         @Override
         public void completed(HttpResponse<String> response) {
             currentRequest = null;
 
-            Platform.runLater(() -> {
-                statusOutput.setText("Request completed");
-            });
-
-            headers.clear();
-
             for (Map.Entry<String, List<String>> headerEntry : response.getHeaders().entrySet()) {
                 headers.addAll(headerEntry.getValue().stream()
                         .map(value -> new JarestHeader(headerEntry.getKey(), value)).collect(Collectors.toList()));
             }
+
+            Platform.runLater(() -> {
+                statusOutput.setText("Request completed");
+                actionButton.setText("Send");
+            });
 
             prettyPrint(response.getHeaders().getFirst("Content-Type"), response.getBody());
         }
@@ -72,6 +73,7 @@ public class MainController {
             Platform.runLater(() -> {
                 statusOutput.setText("Request failed");
                 resultOutput.setText(exception.getMessage());
+                actionButton.setText("Send");
             });
         }
 
@@ -81,6 +83,7 @@ public class MainController {
 
             Platform.runLater(() -> {
                 statusOutput.setText("Request cancelled");
+                actionButton.setText("Send");
             });
         }
     };
@@ -99,74 +102,50 @@ public class MainController {
     void onActionButtonClicked() {
         if (currentRequest != null) {
             currentRequest.cancel(true);
+
+            currentRequest = null;
+
+            Platform.runLater(() -> actionButton.setText("Send"));
         } else {
-            if (validateInput()) {
+            try {
+                URL url = new URL(urlInput.getText());
+
+                Platform.runLater(() -> {
+                    statusOutput.setText("Requesting...");
+                    resultOutput.clear();
+                    actionButton.setText("Cancel");
+                });
+
+                headers.clear();
+
                 switch (getCurrentMethod()) {
                     case GET:
-                        makeGetRequest();
+                        makeGetRequest(url);
 
                         break;
                     case POST:
-                        makePostRequest();
+                        makePostRequest(url);
 
                         break;
                 }
+            } catch (MalformedURLException e) {
+                Platform.runLater(() -> resultOutput.setText(e.getMessage()));
             }
         }
     }
 
-    private void makeGetRequest() {
-        statusOutput.setText("Requesting...");
-
-        currentRequest = Unirest.get(urlInput.getText()).asStringAsync(defaultCallback);
-    }
-
-    private boolean validateInput() {
-        if (!urlInput.getText().startsWith("http")) {
-            Platform.runLater(() -> resultOutput.setText("The URL must start with http"));
-
-            return false;
-        }
-
-        return true;
-    }
-
-    private void prettyPrint(String contentType, String body) {
-        String formattedResult = format(contentType, body);
+    private void prettyPrint(@Nullable String contentType, @NotNull String body) {
+        String formattedResult = FormatterFactory.makeFormatter(contentType).format(body);
 
         Platform.runLater(() -> resultOutput.setText(formattedResult));
     }
 
-    @NotNull
-    private String format(@NotNull String contentType, @NotNull String body) {
-        String result;
-
-        if (contentType.startsWith("text/html")) {
-            Document document = Jsoup.parse(body);
-            result = document.html();
-        } else if (contentType.startsWith("application/json")) {
-            try {
-                if (body.startsWith("{")) {
-                    result = new JSONObject(body).toString(4);
-                } else if (body.startsWith("[")) {
-                    result = new JSONArray(body).toString(4);
-                } else {
-                    result = body;
-                }
-            } catch (JSONException exception) {
-                result = exception.getMessage();
-            }
-        } else {
-            result = body;
-        }
-
-        return result;
+    private void makeGetRequest(@NotNull URL url) {
+        currentRequest = Unirest.get(url.toString()).asStringAsync(defaultCallback);
     }
 
-    private void makePostRequest() {
-        statusOutput.setText("Requesting...");
-
-        currentRequest = Unirest.post(urlInput.getText()).asStringAsync(defaultCallback);
+    private void makePostRequest(@NotNull URL url) {
+        currentRequest = Unirest.post(url.toString()).asStringAsync(defaultCallback);
     }
 
     @NotNull
