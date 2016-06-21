@@ -15,8 +15,6 @@ import javafx.scene.control.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -102,33 +100,27 @@ public class MainController {
     void onActionButtonClicked() {
         if (currentRequest != null) {
             currentRequest.cancel(true);
-
-            currentRequest = null;
-
-            Platform.runLater(() -> actionButton.setText("Send"));
         } else {
             try {
-                URL url = new URL(urlInput.getText());
+                switch (getCurrentMethod()) {
+                    case GET:
+                        makeGetRequest(urlInput.getText());
+
+                        break;
+                    case POST:
+                        makePostRequest(urlInput.getText());
+
+                        break;
+                }
+
+                headers.clear();
 
                 Platform.runLater(() -> {
                     statusOutput.setText("Requesting...");
                     resultOutput.clear();
                     actionButton.setText("Cancel");
                 });
-
-                headers.clear();
-
-                switch (getCurrentMethod()) {
-                    case GET:
-                        makeGetRequest(url);
-
-                        break;
-                    case POST:
-                        makePostRequest(url);
-
-                        break;
-                }
-            } catch (MalformedURLException e) {
+            } catch (Exception e) {
                 Platform.runLater(() -> resultOutput.setText(e.getMessage()));
             }
         }
@@ -140,12 +132,12 @@ public class MainController {
         Platform.runLater(() -> resultOutput.setText(formattedResult));
     }
 
-    private void makeGetRequest(@NotNull URL url) {
-        currentRequest = Unirest.get(url.toString()).asStringAsync(defaultCallback);
+    private void makeGetRequest(@NotNull String url) throws Exception {
+        currentRequest = Unirest.get(url).asStringAsync(defaultCallback);
     }
 
-    private void makePostRequest(@NotNull URL url) {
-        currentRequest = Unirest.post(url.toString()).asStringAsync(defaultCallback);
+    private void makePostRequest(@NotNull String url) throws Exception {
+        currentRequest = Unirest.post(url).asStringAsync(defaultCallback);
     }
 
     @NotNull
