@@ -23,8 +23,9 @@ public class MainApp extends Application {
         primaryStage.setTitle("Jarest");
 
         Pane root = FXMLLoader.load(getClass().getResource("/main.fxml"));
+        Scene scene = new Scene(root);
 
-        primaryStage.setScene(new Scene(root));
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 

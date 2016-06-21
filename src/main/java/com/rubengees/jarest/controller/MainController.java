@@ -5,6 +5,7 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.async.Callback;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.rubengees.jarest.formatting.FormatterFactory;
+import com.rubengees.jarest.formatting.FormattingException;
 import com.rubengees.jarest.model.JarestHeader;
 import com.rubengees.jarest.util.Method;
 import javafx.application.Platform;
@@ -127,9 +128,13 @@ public class MainController {
     }
 
     private void prettyPrint(@Nullable String contentType, @NotNull String body) {
-        String formattedResult = FormatterFactory.makeFormatter(contentType).format(body);
+        try {
+            String formattedResult = FormatterFactory.makeFormatter(contentType).format(body);
 
-        Platform.runLater(() -> resultOutput.setText(formattedResult));
+            Platform.runLater(() -> resultOutput.setText(formattedResult));
+        } catch (FormattingException exception) {
+            Platform.runLater(() -> resultOutput.setText(exception.getMessage()));
+        }
     }
 
     private void makeGetRequest(@NotNull String url) throws Exception {

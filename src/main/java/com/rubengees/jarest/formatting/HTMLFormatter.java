@@ -8,14 +8,18 @@ import org.jsoup.nodes.Document;
  * TODO: Describe class
  *
  * @author Ruben Gees
- * @date 21.06.16
  */
 public class HTMLFormatter implements Formatter {
 
     @NotNull
     @Override
-    public String format(@NotNull String input) {
-        Document document = Jsoup.parse(input);
-        return document.html();
+    public String format(@NotNull String input) throws FormattingException {
+        try {
+            Document document = Jsoup.parse(input);
+
+            return document.html();
+        } catch (Exception exception) {
+            throw new FormattingException();
+        }
     }
 }

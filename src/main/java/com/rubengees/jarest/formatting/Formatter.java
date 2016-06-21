@@ -11,6 +11,6 @@ import org.jetbrains.annotations.NotNull;
 public interface Formatter {
 
     @NotNull
-    String format(@NotNull String input);
+    String format(@NotNull String input) throws FormattingException;
 
 }

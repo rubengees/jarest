@@ -6,9 +6,8 @@
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.layout.*?>
 <?import java.lang.String?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-      minWidth="-Infinity"
-      prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60"
+<VBox xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+      prefHeight="640.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.60"
       fx:controller="com.rubengees.jarest.controller.MainController">
     <MenuBar>
         <Menu mnemonicParsing="false" text="File">
@@ -47,31 +46,100 @@
             </GridPane.margin>
         </TextField>
     </GridPane>
-    <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0"
-               VBox.vgrow="ALWAYS">
+    <SplitPane dividerPositions="0.5" prefHeight="160.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+        <items>
+            <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="160.0" prefWidth="200.0">
+                <items>
+                    <TitledPane animated="false" text="Query Parameters">
+                        <content>
+                            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                                <children>
+                                    <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                                               VBox.vgrow="ALWAYS">
+                                        <columns>
+                                            <TableColumn text="Parameter"/>
+                                            <TableColumn text="Value"/>
+                                        </columns>
+                                        <columnResizePolicy>
+                                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                                        </columnResizePolicy>
+                                    </TableView>
+                                    <GridPane>
+                                        <columnConstraints>
+                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                        </columnConstraints>
+                                        <rowConstraints>
+                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                        </rowConstraints>
+                                    </GridPane>
+                                </children>
+                            </VBox>
+                        </content>
+                    </TitledPane>
+                    <TitledPane animated="false" text="Body">
+                        <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                            <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                                       VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn text="Parameter"/>
+                                    <TableColumn text="Value"/>
+                                </columns>
+                                <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                                </columnResizePolicy>
+                            </TableView>
+                            <GridPane>
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                </rowConstraints>
+                            </GridPane>
+                        </VBox>
+                    </TitledPane>
+                </items>
+            </SplitPane>
+            <SplitPane dividerPositions="0.5" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                       orientation="VERTICAL">
+                <TitledPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Output Headers">
+                    <TableView fx:id="headerOutput" maxHeight="1.7976931348623157E308"
+                               maxWidth="1.7976931348623157E308">
+                        <placeholder>
+                            <Label text=""/>
+                        </placeholder>
+                        <columns>
+                            <TableColumn text="Header">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="title"/>
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn text="Value">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="value"/>
+                                </cellValueFactory>
+                            </TableColumn>
+                        </columns>
+                        <columnResizePolicy>
+                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                        </columnResizePolicy>
+                    </TableView>
+                </TitledPane>
+                <TitledPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Output Body">
+                    <TextArea fx:id="resultOutput" editable="false" maxHeight="1.7976931348623157E308"
+                              maxWidth="1.7976931348623157E308" wrapText="true"/>
+                </TitledPane>
+            </SplitPane>
+        </items>
         <VBox.margin>
             <Insets left="20.0" right="20.0"/>
         </VBox.margin>
-        <TableView fx:id="headerOutput">
-            <columns>
-                <TableColumn text="Header">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="title"/>
-                    </cellValueFactory>
-                </TableColumn>
-                <TableColumn text="Value">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="value"/>
-                    </cellValueFactory>
-                </TableColumn>
-            </columns>
-            <columnResizePolicy>
-                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-            </columnResizePolicy>
-        </TableView>
-        <ScrollPane fitToHeight="true" fitToWidth="true" styleClass="edge-to-edge">
-            <TextArea fx:id="resultOutput" editable="false" wrapText="true"/>
-        </ScrollPane>
     </SplitPane>
     <GridPane>
         <columnConstraints>
@@ -81,7 +149,7 @@
         <rowConstraints>
             <RowConstraints vgrow="NEVER"/>
         </rowConstraints>
-        <Button mnemonicParsing="false" fx:id="actionButton" onAction="#onActionButtonClicked" text="Send"
+        <Button fx:id="actionButton" mnemonicParsing="false" onAction="#onActionButtonClicked" text="Send"
                 GridPane.columnIndex="1">
             <GridPane.margin>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>

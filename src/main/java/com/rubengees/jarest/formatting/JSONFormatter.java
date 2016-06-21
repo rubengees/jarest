@@ -2,7 +2,6 @@ package com.rubengees.jarest.formatting;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -15,7 +14,7 @@ public class JSONFormatter implements Formatter {
 
     @NotNull
     @Override
-    public String format(@NotNull String input) {
+    public String format(@NotNull String input) throws FormattingException {
         try {
             if (input.startsWith("{")) {
                 return new JSONObject(input).toString(4);
@@ -24,8 +23,8 @@ public class JSONFormatter implements Formatter {
             } else {
                 return input;
             }
-        } catch (JSONException exception) {
-            return exception.getMessage();
+        } catch (Exception exception) {
+            throw new FormattingException();
         }
     }
 }
