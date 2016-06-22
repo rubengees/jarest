@@ -6,6 +6,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.nio.client.HttpAsyncClients;
 
 /**
  * TODO: Describe Class
@@ -15,6 +17,9 @@ import javafx.stage.Stage;
 public class MainApp extends Application {
 
     public static void main(String[] args) {
+        Unirest.setHttpClient(HttpClients.custom().build());
+        Unirest.setAsyncHttpClient(HttpAsyncClients.custom().build());
+
         launch(args);
     }
 

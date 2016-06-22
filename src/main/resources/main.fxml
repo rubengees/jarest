@@ -7,11 +7,18 @@
 <?import javafx.scene.layout.*?>
 <?import java.lang.String?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-      prefHeight="640.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.76-ea"
+      prefHeight="640.0"
+      prefWidth="800.0" xmlns="http://javafx.com/javafx/null"
       fx:controller="com.rubengees.jarest.controller.MainController">
     <MenuBar>
         <Menu mnemonicParsing="false" text="File">
-            <MenuItem mnemonicParsing="false" onAction="#onCloseButtonPressed" text="Close"/>
+            <MenuItem mnemonicParsing="false" onAction="#onCloseButtonClick" text="Close"/>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Cookies">
+            <items>
+                <MenuItem mnemonicParsing="false" onAction="#onShowCookiesClick" text="Show"/>
+                <MenuItem mnemonicParsing="false" onAction="#onClearCookies" text="Clear"/>
+            </items>
         </Menu>
     </MenuBar>
     <GridPane>
@@ -57,7 +64,8 @@
                     <padding>
                         <Insets bottom="-1.0" left="-1.0" right="-1.0" top="-1.0"/>
                     </padding>
-                    <TableView fx:id="queryInput" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                    <TableView fx:id="queryInput" editable="true" maxHeight="1.7976931348623157E308"
+                               maxWidth="1.7976931348623157E308">
                         <placeholder>
                             <Label text=""/>
                         </placeholder>
@@ -203,7 +211,7 @@
         <rowConstraints>
             <RowConstraints vgrow="NEVER"/>
         </rowConstraints>
-        <Button fx:id="actionButton" mnemonicParsing="false" onAction="#onActionButtonClicked" text="Send"
+        <Button fx:id="actionButton" mnemonicParsing="false" onAction="#onActionButtonClick" text="Send"
                 GridPane.columnIndex="1">
             <GridPane.margin>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>

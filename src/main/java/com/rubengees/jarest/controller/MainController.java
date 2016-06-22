@@ -11,6 +11,7 @@ import com.rubengees.jarest.model.JarestHeader;
 import com.rubengees.jarest.model.JarestQueryParameter;
 import com.rubengees.jarest.util.Method;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -115,15 +116,30 @@ public class MainController {
         headerOutput.setItems(headers);
         queryInput.setItems(queryParameters);
         formInput.setItems(formParameters);
+
+        queryInput.setRowFactory(param -> {
+            TableRow<JarestQueryParameter> row = new TableRow<>();
+            ContextMenu rowMenu = new ContextMenu();
+            MenuItem removeItem = new MenuItem("Delete");
+
+            removeItem.setOnAction(event -> queryInput.getItems().remove(row.getItem()));
+            rowMenu.getItems().add(removeItem);
+
+            row.contextMenuProperty().bind(
+                    Bindings.when(Bindings.isNotNull(row.itemProperty()))
+                            .then(rowMenu)
+                            .otherwise((ContextMenu) null));
+            return row;
+        });
     }
 
     @FXML
-    void onCloseButtonPressed() {
+    void onCloseButtonClick() {
         Platform.exit();
     }
 
     @FXML
-    void onActionButtonClicked() {
+    void onActionButtonClick() {
         makeRequest();
     }
 
@@ -146,6 +162,16 @@ public class MainController {
             formParameters.add(new JarestFormParameter(formParameterTitleInput.getText(),
                     formParameterValueInput.getText()));
         }
+    }
+
+    @FXML
+    void onShowCookiesClick() {
+        //TODO
+    }
+
+    @FXML
+    void onClearCookies() {
+        //TODO
     }
 
     private void prettyPrint(@Nullable String contentType, @NotNull String body) {
