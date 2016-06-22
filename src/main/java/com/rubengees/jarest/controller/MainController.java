@@ -18,6 +18,7 @@ import javafx.scene.control.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -81,7 +82,7 @@ public class MainController {
             }
 
             Platform.runLater(() -> {
-                statusOutput.setText("Request completed");
+                statusOutput.setText("Request completed: " + response.getStatus() + " " + response.getStatusText());
                 actionButton.setText("Send");
             });
 
@@ -93,8 +94,7 @@ public class MainController {
             currentRequest = null;
 
             Platform.runLater(() -> {
-                statusOutput.setText("Request failed");
-                resultOutput.setText(exception.getMessage());
+                statusOutput.setText("Request failed: " + exception.getMessage());
                 actionButton.setText("Send");
             });
         }
@@ -132,13 +132,29 @@ public class MainController {
         makeRequest();
     }
 
+    @FXML
+    void onAddQueryParameter() {
+        if (!queryParameterTitleInput.getText().isEmpty() && !queryParameterValueInput.getText().isEmpty()) {
+            queryParameters.add(new JarestQueryParameter(queryParameterTitleInput.getText(),
+                    queryParameterValueInput.getText()));
+        }
+    }
+
+    @FXML
+    void onAddFormParameter() {
+        if (!formParameterTitleInput.getText().isEmpty() && !formParameterValueInput.getText().isEmpty()) {
+            formParameters.add(new JarestFormParameter(formParameterTitleInput.getText(),
+                    formParameterValueInput.getText()));
+        }
+    }
+
     private void prettyPrint(@Nullable String contentType, @NotNull String body) {
         try {
             String formattedResult = FormatterFactory.makeFormatter(contentType).format(body);
 
             Platform.runLater(() -> resultOutput.setText(formattedResult));
         } catch (FormattingException exception) {
-            Platform.runLater(() -> resultOutput.setText(exception.getMessage()));
+            Platform.runLater(() -> statusOutput.setText(exception.getMessage()));
         }
     }
 
@@ -166,17 +182,21 @@ public class MainController {
                     actionButton.setText("Cancel");
                 });
             } catch (Exception e) {
-                Platform.runLater(() -> resultOutput.setText(e.getMessage()));
+                Platform.runLater(() -> {
+                    statusOutput.setText(e.getMessage());
+                    actionButton.setText("Send");
+                });
             }
         }
     }
 
     private void makeGetRequest(@NotNull String url) throws Exception {
-        currentRequest = Unirest.get(url).asStringAsync(defaultCallback);
+        currentRequest = Unirest.get(url).queryString(getQueryParameters()).asStringAsync(defaultCallback);
     }
 
     private void makePostRequest(@NotNull String url) throws Exception {
-        currentRequest = Unirest.post(url).asStringAsync(defaultCallback);
+        currentRequest = Unirest.post(url).queryString(getQueryParameters()).fields(getFormParameters())
+                .asStringAsync(defaultCallback);
     }
 
     @NotNull
@@ -191,19 +211,25 @@ public class MainController {
         }
     }
 
-    @FXML
-    void onAddQueryParameter() {
-        if (!queryParameterTitleInput.getText().isEmpty() && !queryParameterValueInput.getText().isEmpty()) {
-            queryParameters.add(new JarestQueryParameter(queryParameterTitleInput.getText(),
-                    queryParameterValueInput.getText()));
+    @NotNull
+    private Map<String, Object> getQueryParameters() {
+        Map<String, Object> result = new HashMap<>();
+
+        for (JarestQueryParameter queryParameter : queryParameters) {
+            result.put(queryParameter.getTitle(), queryParameter.getValue());
         }
+
+        return result;
     }
 
-    @FXML
-    void onAddFormParameter() {
-        if (!formParameterTitleInput.getText().isEmpty() && !formParameterValueInput.getText().isEmpty()) {
-            formParameters.add(new JarestFormParameter(formParameterTitleInput.getText(),
-                    formParameterValueInput.getText()));
+    @NotNull
+    private Map<String, Object> getFormParameters() {
+        Map<String, Object> result = new HashMap<>();
+
+        for (JarestFormParameter formParameter : formParameters) {
+            result.put(formParameter.getTitle(), formParameter.getValue());
         }
+
+        return result;
     }
 }
