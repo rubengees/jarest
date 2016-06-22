@@ -6,7 +6,9 @@ import com.mashape.unirest.http.async.Callback;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.rubengees.jarest.formatting.FormatterFactory;
 import com.rubengees.jarest.formatting.FormattingException;
+import com.rubengees.jarest.model.JarestFormParameter;
 import com.rubengees.jarest.model.JarestHeader;
+import com.rubengees.jarest.model.JarestQueryParameter;
 import com.rubengees.jarest.util.Method;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -29,11 +31,28 @@ import java.util.stream.Collectors;
 public class MainController {
 
     @FXML
+    TableView<JarestQueryParameter> queryInput;
+    @FXML
+    TextField queryParameterTitleInput;
+    @FXML
+    TextField queryParameterValueInput;
+
+    @FXML
+    TableView<JarestFormParameter> formInput;
+    @FXML
+    TextField formParameterTitleInput;
+    @FXML
+    TextField formParameterValueInput;
+
+    @FXML
     TextField urlInput;
+
     @FXML
     ComboBox methodComboBox;
+
     @FXML
     Button actionButton;
+
     @FXML
     TextArea resultOutput;
     @FXML
@@ -45,6 +64,10 @@ public class MainController {
     private Future<HttpResponse<String>> currentRequest = null;
     @NotNull
     private ObservableList<JarestHeader> headers = FXCollections.observableArrayList();
+    @NotNull
+    private ObservableList<JarestQueryParameter> queryParameters = FXCollections.observableArrayList();
+    @NotNull
+    private ObservableList<JarestFormParameter> formParameters = FXCollections.observableArrayList();
 
     @NotNull
     private Callback<String> defaultCallback = new Callback<String>() {
@@ -90,6 +113,8 @@ public class MainController {
     @FXML
     public void initialize() {
         headerOutput.setItems(headers);
+        queryInput.setItems(queryParameters);
+        formInput.setItems(formParameters);
     }
 
     @FXML
@@ -99,6 +124,25 @@ public class MainController {
 
     @FXML
     void onActionButtonClicked() {
+        makeRequest();
+    }
+
+    @FXML
+    void onUrlInputEnter() {
+        makeRequest();
+    }
+
+    private void prettyPrint(@Nullable String contentType, @NotNull String body) {
+        try {
+            String formattedResult = FormatterFactory.makeFormatter(contentType).format(body);
+
+            Platform.runLater(() -> resultOutput.setText(formattedResult));
+        } catch (FormattingException exception) {
+            Platform.runLater(() -> resultOutput.setText(exception.getMessage()));
+        }
+    }
+
+    private void makeRequest() {
         if (currentRequest != null) {
             currentRequest.cancel(true);
         } else {
@@ -127,16 +171,6 @@ public class MainController {
         }
     }
 
-    private void prettyPrint(@Nullable String contentType, @NotNull String body) {
-        try {
-            String formattedResult = FormatterFactory.makeFormatter(contentType).format(body);
-
-            Platform.runLater(() -> resultOutput.setText(formattedResult));
-        } catch (FormattingException exception) {
-            Platform.runLater(() -> resultOutput.setText(exception.getMessage()));
-        }
-    }
-
     private void makeGetRequest(@NotNull String url) throws Exception {
         currentRequest = Unirest.get(url).asStringAsync(defaultCallback);
     }
@@ -154,6 +188,22 @@ public class MainController {
                 return Method.POST;
             default:
                 return Method.GET;
+        }
+    }
+
+    @FXML
+    void onAddQueryParameter() {
+        if (!queryParameterTitleInput.getText().isEmpty() && !queryParameterValueInput.getText().isEmpty()) {
+            queryParameters.add(new JarestQueryParameter(queryParameterTitleInput.getText(),
+                    queryParameterValueInput.getText()));
+        }
+    }
+
+    @FXML
+    void onAddFormParameter() {
+        if (!formParameterTitleInput.getText().isEmpty() && !formParameterValueInput.getText().isEmpty()) {
+            formParameters.add(new JarestFormParameter(formParameterTitleInput.getText(),
+                    formParameterValueInput.getText()));
         }
     }
 }
