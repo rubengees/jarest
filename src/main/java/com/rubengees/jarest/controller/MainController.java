@@ -13,8 +13,6 @@ import com.rubengees.jarest.util.Method;
 import com.rubengees.jarest.util.ObservableCookieStore;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -159,14 +157,11 @@ public class MainController {
             return row;
         });
 
-        methodComboBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                if (newValue.equals(1)) {
-                    formInputRoot.setExpanded(true);
-                } else {
-                    formInputRoot.setExpanded(false);
-                }
+        methodComboBox.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.equals(1)) {
+                formInputRoot.setExpanded(true);
+            } else {
+                formInputRoot.setExpanded(false);
             }
         });
     }
