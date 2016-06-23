@@ -1,6 +1,7 @@
 package com.rubengees.jarest;
 
 import com.mashape.unirest.http.Unirest;
+import com.rubengees.jarest.model.CookieManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,8 +18,9 @@ import org.apache.http.impl.nio.client.HttpAsyncClients;
 public class MainApp extends Application {
 
     public static void main(String[] args) {
-        Unirest.setHttpClient(HttpClients.custom().build());
-        Unirest.setAsyncHttpClient(HttpAsyncClients.custom().build());
+        Unirest.setHttpClient(HttpClients.custom().setDefaultCookieStore(CookieManager.getCookieStore()).build());
+        Unirest.setAsyncHttpClient(HttpAsyncClients.custom().setDefaultCookieStore(CookieManager.getCookieStore())
+                .build());
 
         launch(args);
     }

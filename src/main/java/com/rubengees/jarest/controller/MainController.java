@@ -6,6 +6,7 @@ import com.mashape.unirest.http.async.Callback;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.rubengees.jarest.formatting.FormatterFactory;
 import com.rubengees.jarest.formatting.FormattingException;
+import com.rubengees.jarest.model.CookieManager;
 import com.rubengees.jarest.model.JarestFormParameter;
 import com.rubengees.jarest.model.JarestHeader;
 import com.rubengees.jarest.model.JarestQueryParameter;
@@ -122,7 +123,22 @@ public class MainController {
             ContextMenu rowMenu = new ContextMenu();
             MenuItem removeItem = new MenuItem("Delete");
 
-            removeItem.setOnAction(event -> queryInput.getItems().remove(row.getItem()));
+            removeItem.setOnAction(event -> param.getItems().remove(row.getItem()));
+            rowMenu.getItems().add(removeItem);
+
+            row.contextMenuProperty().bind(
+                    Bindings.when(Bindings.isNotNull(row.itemProperty()))
+                            .then(rowMenu)
+                            .otherwise((ContextMenu) null));
+            return row;
+        });
+
+        formInput.setRowFactory(param -> {
+            TableRow<JarestFormParameter> row = new TableRow<>();
+            ContextMenu rowMenu = new ContextMenu();
+            MenuItem removeItem = new MenuItem("Delete");
+
+            removeItem.setOnAction(event -> param.getItems().remove(row.getItem()));
             rowMenu.getItems().add(removeItem);
 
             row.contextMenuProperty().bind(
@@ -171,7 +187,7 @@ public class MainController {
 
     @FXML
     void onClearCookies() {
-        //TODO
+        CookieManager.clearCookies();
     }
 
     private void prettyPrint(@Nullable String contentType, @NotNull String body) {
