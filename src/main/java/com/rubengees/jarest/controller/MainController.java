@@ -6,20 +6,29 @@ import com.mashape.unirest.http.async.Callback;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.rubengees.jarest.formatting.FormatterFactory;
 import com.rubengees.jarest.formatting.FormattingException;
-import com.rubengees.jarest.model.CookieManager;
 import com.rubengees.jarest.model.JarestFormParameter;
 import com.rubengees.jarest.model.JarestHeader;
 import com.rubengees.jarest.model.JarestQueryParameter;
 import com.rubengees.jarest.util.Method;
+import com.rubengees.jarest.util.ObservableCookieStore;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +49,8 @@ public class MainController {
     @FXML
     TextField queryParameterValueInput;
 
+    @FXML
+    TitledPane formInputRoot;
     @FXML
     TableView<JarestFormParameter> formInput;
     @FXML
@@ -147,6 +158,17 @@ public class MainController {
                             .otherwise((ContextMenu) null));
             return row;
         });
+
+        methodComboBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                if (newValue.equals(1)) {
+                    formInputRoot.setExpanded(true);
+                } else {
+                    formInputRoot.setExpanded(false);
+                }
+            }
+        });
     }
 
     @FXML
@@ -169,6 +191,9 @@ public class MainController {
         if (!queryParameterTitleInput.getText().isEmpty() && !queryParameterValueInput.getText().isEmpty()) {
             queryParameters.add(new JarestQueryParameter(queryParameterTitleInput.getText(),
                     queryParameterValueInput.getText()));
+
+            queryParameterTitleInput.clear();
+            queryParameterValueInput.clear();
         }
     }
 
@@ -177,17 +202,35 @@ public class MainController {
         if (!formParameterTitleInput.getText().isEmpty() && !formParameterValueInput.getText().isEmpty()) {
             formParameters.add(new JarestFormParameter(formParameterTitleInput.getText(),
                     formParameterValueInput.getText()));
+
+            formParameterTitleInput.clear();
+            formParameterValueInput.clear();
         }
     }
 
     @FXML
     void onShowCookiesClick() {
-        //TODO
+        try {
+            Pane root = new FXMLLoader(getClass().getClassLoader().getResource("cookies.fxml")).load();
+            Stage stage = new Stage();
+
+            stage.initModality(Modality.NONE);
+            stage.initStyle(StageStyle.UNIFIED);
+            stage.setTitle("Cookies");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+
+            errorAlert.setTitle("Error Report");
+            errorAlert.setHeaderText(e.getMessage());
+            errorAlert.showAndWait();
+        }
     }
 
     @FXML
     void onClearCookies() {
-        CookieManager.clearCookies();
+        ObservableCookieStore.getInstance().clear();
     }
 
     private void prettyPrint(@Nullable String contentType, @NotNull String body) {

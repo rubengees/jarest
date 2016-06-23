@@ -15,10 +15,8 @@
             <MenuItem mnemonicParsing="false" onAction="#onCloseButtonClick" text="Close"/>
         </Menu>
         <Menu mnemonicParsing="false" text="Cookies">
-            <items>
-                <MenuItem mnemonicParsing="false" onAction="#onShowCookiesClick" text="Show"/>
-                <MenuItem mnemonicParsing="false" onAction="#onClearCookies" text="Clear"/>
-            </items>
+            <MenuItem mnemonicParsing="false" onAction="#onShowCookiesClick" text="Show"/>
+            <MenuItem mnemonicParsing="false" onAction="#onClearCookies" text="Clear"/>
         </Menu>
     </MenuBar>
     <GridPane>
@@ -116,7 +114,7 @@
                     </GridPane>
                 </VBox>
             </TitledPane>
-            <TitledPane animated="false" text="Form Parameters">
+            <TitledPane animated="false" fx:id="formInputRoot" text="Form Parameters">
                 <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                     <padding>
                         <Insets bottom="-1.0" left="-1.0" right="-1.0" top="-1.0"/>
