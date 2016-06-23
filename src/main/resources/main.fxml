@@ -15,7 +15,7 @@
             <MenuItem mnemonicParsing="false" onAction="#onCloseButtonClick" text="Close"/>
         </Menu>
         <Menu mnemonicParsing="false" text="Cookies">
-            <MenuItem mnemonicParsing="false" onAction="#onShowCookiesClick" text="Show"/>
+            <MenuItem mnemonicParsing="false" onAction="#onViewCookiesClick" text="View"/>
             <MenuItem mnemonicParsing="false" onAction="#onClearCookies" text="Clear"/>
         </Menu>
     </MenuBar>

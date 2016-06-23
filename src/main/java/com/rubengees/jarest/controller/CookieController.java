@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.TextFieldTableCell;
 import org.apache.http.cookie.Cookie;
 
 /**
@@ -12,7 +13,7 @@ import org.apache.http.cookie.Cookie;
  *
  * @author Ruben Gees
  */
-public class CookieController {
+public class CookieController extends AbstractController {
 
     @FXML
     TableView<Cookie> cookieTable;
@@ -25,6 +26,8 @@ public class CookieController {
     public void initialize() {
         nameColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getName()));
         valueColumn.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getValue()));
+        nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        valueColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         cookieTable.setItems(ObservableCookieStore.getInstance().getCookies());
     }
 }

@@ -16,11 +16,7 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.Pane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.jetbrains.annotations.NotNull;
@@ -38,7 +34,7 @@ import java.util.stream.Collectors;
  *
  * @author Ruben Gees
  */
-public class MainController {
+public class MainController extends AbstractController {
 
     @FXML
     TableView<JarestQueryParameter> queryInput;
@@ -204,15 +200,15 @@ public class MainController {
     }
 
     @FXML
-    void onShowCookiesClick() {
+    void onViewCookiesClick() {
         try {
-            Pane root = new FXMLLoader(getClass().getClassLoader().getResource("cookies.fxml")).load();
             Stage stage = new Stage();
 
-            stage.initModality(Modality.NONE);
+            mainApp.makeStage(stage, "/cookies.fxml");
+
             stage.initStyle(StageStyle.UNIFIED);
+            stage.initOwner(mainApp.getPrimaryStage());
             stage.setTitle("Cookies");
-            stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
