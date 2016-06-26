@@ -11,6 +11,7 @@
       prefWidth="800.0" xmlns="http://javafx.com/javafx/null"
       fx:controller="com.rubengees.jarest.controller.MainController">
     <MenuBar>
+        <Menu mnemonicParsing="false" text="File"/>
         <Menu mnemonicParsing="false" text="File">
             <MenuItem mnemonicParsing="false" onAction="#onCloseButtonClick" text="Close"/>
         </Menu>
@@ -56,7 +57,7 @@
             <Insets left="20.0" right="20.0"/>
         </VBox.margin>
         <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="160.0" prefWidth="200.0">
-            <TitledPane animated="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+            <TitledPane animated="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
                         text="Query Parameters">
                 <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                     <padding>
@@ -114,7 +115,7 @@
                     </GridPane>
                 </VBox>
             </TitledPane>
-            <TitledPane animated="false" fx:id="formInputRoot" text="Form Parameters">
+            <TitledPane animated="true" fx:id="formInputRoot" text="Form Parameters">
                 <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                     <padding>
                         <Insets bottom="-1.0" left="-1.0" right="-1.0" top="-1.0"/>
