@@ -152,14 +152,6 @@ public class MainController extends AbstractController {
                             .otherwise((ContextMenu) null));
             return row;
         });
-
-        methodComboBox.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.equals(1)) {
-                formInputRoot.setExpanded(true);
-            } else {
-                formInputRoot.setExpanded(false);
-            }
-        });
     }
 
     @FXML

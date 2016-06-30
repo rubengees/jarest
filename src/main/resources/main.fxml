@@ -8,10 +8,9 @@
 <?import java.lang.String?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
       prefHeight="640.0"
-      prefWidth="800.0" xmlns="http://javafx.com/javafx/null"
+      prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.76-ea"
       fx:controller="com.rubengees.jarest.controller.MainController">
     <MenuBar>
-        <Menu mnemonicParsing="false" text="File"/>
         <Menu mnemonicParsing="false" text="File">
             <MenuItem mnemonicParsing="false" onAction="#onCloseButtonClick" text="Close"/>
         </Menu>
@@ -52,19 +51,18 @@
             </GridPane.margin>
         </TextField>
     </GridPane>
-    <SplitPane dividerPositions="0.5" prefHeight="160.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+    <SplitPane dividerPositions="0.5" VBox.vgrow="ALWAYS">
         <VBox.margin>
             <Insets left="20.0" right="20.0"/>
         </VBox.margin>
         <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="160.0" prefWidth="200.0">
-            <TitledPane animated="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                        text="Query Parameters">
+            <TitledPane animated="true" text="Query Parameters">
                 <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                     <padding>
                         <Insets bottom="-1.0" left="-1.0" right="-1.0" top="-1.0"/>
                     </padding>
                     <TableView fx:id="queryInput" editable="true" maxHeight="1.7976931348623157E308"
-                               maxWidth="1.7976931348623157E308">
+                               maxWidth="1.7976931348623157E308" prefHeight="999999">
                         <placeholder>
                             <Label text=""/>
                         </placeholder>
@@ -115,12 +113,13 @@
                     </GridPane>
                 </VBox>
             </TitledPane>
-            <TitledPane animated="true" fx:id="formInputRoot" text="Form Parameters">
+            <TitledPane fx:id="formInputRoot" animated="true" text="Form Parameters">
                 <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                     <padding>
                         <Insets bottom="-1.0" left="-1.0" right="-1.0" top="-1.0"/>
                     </padding>
-                    <TableView fx:id="formInput" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                    <TableView fx:id="formInput" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                               prefHeight="999999">
                         <placeholder>
                             <Label text=""/>
                         </placeholder>
@@ -172,33 +171,46 @@
                 </VBox>
             </TitledPane>
         </SplitPane>
-        <SplitPane dividerPositions="0.5" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                   orientation="VERTICAL">
-            <TitledPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Output Headers">
-                <TableView fx:id="headerOutput" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-                    <placeholder>
-                        <Label text=""/>
-                    </placeholder>
-                    <columns>
-                        <TableColumn text="Header">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="title"/>
-                            </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn text="Value">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="value"/>
-                            </cellValueFactory>
-                        </TableColumn>
-                    </columns>
-                    <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-                    </columnResizePolicy>
-                </TableView>
+        <SplitPane dividerPositions="0.5" orientation="VERTICAL">
+            <TitledPane animated="true" text="Output Headers">
+                <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                    <padding>
+                        <Insets bottom="-1.0" left="-1.0" right="-1.0" top="-1.0"/>
+                    </padding>
+                    <TableView fx:id="headerOutput" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                               prefHeight="999999">
+                        <placeholder>
+                            <Label text=""/>
+                        </placeholder>
+                        <columns>
+                            <TableColumn text="Header">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="title"/>
+                                </cellValueFactory>
+                            </TableColumn>
+                            <TableColumn text="Value">
+                                <cellValueFactory>
+                                    <PropertyValueFactory property="value"/>
+                                </cellValueFactory>
+                            </TableColumn>
+                        </columns>
+                        <columnResizePolicy>
+                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                        </columnResizePolicy>
+                        <VBox.margin>
+                            <Insets/>
+                        </VBox.margin>
+                    </TableView>
+                </VBox>
             </TitledPane>
-            <TitledPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Output Body">
-                <TextArea fx:id="resultOutput" editable="false" maxHeight="1.7976931348623157E308"
-                          maxWidth="1.7976931348623157E308" wrapText="true"/>
+            <TitledPane animated="true" text="Output Body">
+                <VBox>
+                    <padding>
+                        <Insets bottom="-1.0" left="-1.0" right="-1.0" top="-1.0"/>
+                    </padding>
+                    <TextArea fx:id="resultOutput" editable="false" maxHeight="1.7976931348623157E308"
+                              maxWidth="1.7976931348623157E308" prefHeight="999999" wrapText="true"/>
+                </VBox>
             </TitledPane>
         </SplitPane>
     </SplitPane>
