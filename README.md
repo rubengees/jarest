@@ -8,7 +8,11 @@ Features are:
 - Set and send query parameters with an easy to use form
 - Same for POST parameters
 - Cookiemanagement with the ability to view and remove each
-- Freely arrangeable user interface to focus on what is currently important to you 
+- Freely arrangeable user interface to focus on what is currently important to you
+
+ Sample 1 | Sample 2
+:--------:|:--------:
+![](art/simple_request.png) | ![](art/query_request.png)
 
 ### Requirements
 
