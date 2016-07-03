@@ -21,7 +21,7 @@ Sample 1 | Sample 2
 
 ### Installation and Running
 
-Download the latest release. If you are using Windows you can directly run the .jar file. If you are on Linux or you want to run the file from the terminal, run the following command:
+Download the [latest release](https://github.com/rubengees/jarest/releases/latest). If you are using Windows you can directly run the .jar file. If you are on Linux or you want to run the file from the terminal, run the following command:
 
 ```bash
 java -jar jarest.jar
